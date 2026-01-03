@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdbool.h>
+
+#define CHAR_RANGE 256 // Total ASCII characters
+
+// Function to check if two strings are anagrams
+bool isAnagram(char str1[], char str2[]) {
+    int count[CHAR_RANGE] = {0}; // Array to store character counts
+    int i;
+
+    // Count characters in the first string
+    for (i = 0; str1[i] != '\0'; i++) {
+        if (isalnum(str1[i])) {
+            count[tolower(str1[i])]++;
+        }
+    }
+
+    // Subtract counts using the second string
+    for (i = 0; str2[i] != '\0'; i++) {
+        if (isalnum(str2[i])) {
+            count[tolower(str2[i])]--;
+        }
+    }
+
+    // Check if all counts are zero
+    for (i = 0; i < CHAR_RANGE; i++) {
+        if (count[i] != 0) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+int main() {
+    char str1[100], str2[100];
+
+    printf("Enter first string: ");
+    fgets(str1, sizeof(str1), stdin);
+    str1[strcspn(str1, "\n")] = '\0'; // Remove newline
+
+    printf("Enter second string: ");
+    fgets(str2, sizeof(str2), stdin);
+    str2[strcspn(str2, "\n")] = '\0'; // Remove newline
+
+    if (isAnagram(str1, str2)) {
+        printf("The strings are anagrams.\n");
+    } else {
+        printf("The strings are NOT anagrams.\n");
+    }
+
+    return 0;
+}
