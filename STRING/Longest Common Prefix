@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_STR 100    // Maximum length of each string
+#define MAX_ARR 50     // Maximum number of strings
+
+// Function to find the longest common prefix
+void longestCommonPrefix(char strs[][MAX_STR], int n) {
+    if (n == 0) {
+        printf("No strings provided.\n");
+        return;
+    }
+
+    char prefix[MAX_STR];
+    int i, j;
+
+    // Start with the first string as the prefix
+    strcpy(prefix, strs[0]);
+
+    // Compare prefix with each string
+    for (i = 1; i < n; i++) {
+        j = 0;
+        // Compare character by character
+        while (prefix[j] && strs[i][j] && prefix[j] == strs[i][j]) {
+            j++;
+        }
+        prefix[j] = '\0'; // Trim prefix to matched length
+        if (prefix[0] == '\0') {
+            break; // No common prefix
+        }
+    }
+
+    if (prefix[0] != '\0') {
+        printf("Longest Common Prefix: %s\n", prefix);
+    } else {
+        printf("No common prefix found.\n");
+    }
+}
+
+int main() {
+    int n, i;
+    char strs[MAX_ARR][MAX_STR];
+
+    printf("Enter number of strings: ");
+    scanf("%d", &n);
+    getchar(); // Consume newline after number input
+
+    for (i = 0; i < n; i++) {
+        printf("Enter string %d: ", i + 1);
+        fgets(strs[i], sizeof(strs[i]), stdin);
+        strs[i][strcspn(strs[i], "\n")] = '\0'; // Remove newline
+    }
+
+    longestCommonPrefix(strs, n);
+
+    return 0;
+}
