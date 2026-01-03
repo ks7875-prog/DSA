@@ -1,0 +1,95 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to create a new node
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Function to print the linked list
+void printList(struct Node* head) {
+    struct Node* temp = head;
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+// Function to remove the Nth node from end
+struct Node* removeNthFromEnd(struct Node* head, int n) {
+    struct Node dummy; // Dummy node to handle edge cases
+    dummy.next = head;
+    struct Node* first = &dummy;
+    struct Node* second = &dummy;
+
+    // Move first pointer n+1 steps ahead
+    for (int i = 0; i <= n; i++) {
+        if (first != NULL)
+            first = first->next;
+        else
+            return head; // N is larger than list length
+    }
+
+    // Move both pointers until first reaches the end
+    while (first != NULL) {
+        first = first->next;
+        second = second->next;
+    }
+
+    // Remove the Nth node
+    struct Node* temp = second->next;
+    second->next = second->next->next;
+    free(temp);
+
+    return dummy.next;
+}
+
+int main() {
+    struct Node* head = NULL;
+    struct Node* temp;
+    int n, value, length;
+
+    printf("Enter number of nodes: ");
+    scanf("%d", &length);
+    if (length <= 0) {
+        printf("No nodes to create.\n");
+        return 0;
+    }
+
+    // Create linked list
+    for (int i = 0; i < length; i++) {
+        printf("Enter value for node %d: ", i + 1);
+        scanf("%d", &value);
+        struct Node* newNode = createNode(value);
+        if (head == NULL) {
+            head = newNode;
+            temp = head;
+        } else {
+            temp->next = newNode;
+            temp = temp->next;
+        }
+    }
+
+    printf("\nOriginal Linked List:\n");
+    printList(head);
+
+    printf("\nEnter N (from end) to remove: ");
+    scanf("%d", &n);
+
+    head = removeNthFromEnd(head, n);
+
+    printf("\nLinked List after removing %dth node from end:\n", n);
+    printList(head);
+
+    return 0;
+}
