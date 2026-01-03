@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+
+int main() {
+    char str[200], result[200];
+    bool seen[256] = { false }; // ASCII character tracking
+    int i, j = 0;
+
+    printf("Enter a string: ");
+    fgets(str, sizeof(str), stdin);
+    str[strcspn(str, "\n")] = '\0'; // Remove newline if present
+
+    for (i = 0; str[i] != '\0'; i++) {
+        unsigned char ch = str[i]; // Convert to unsigned for ASCII indexing
+        if (!seen[ch]) {
+            result[j++] = str[i]; // Add first occurrence
+            seen[ch] = true;      // Mark character as seen
+        }
+    }
+
+    result[j] = '\0'; // Null-terminate result string
+
+    printf("String after removing duplicates: %s\n", result);
+
+    return 0;
+}
