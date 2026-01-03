@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <string.h>
+
+void generateSubsets(char str[], char subset[], int index, int subsetIndex) {
+    if (str[index] == '\0') { // Base case: reached end of string
+        subset[subsetIndex] = '\0'; // Null-terminate current subset
+        if (subsetIndex > 0) {     // Print non-empty subsets
+            printf("%s\n", subset);
+        }
+        return;
+    }
+
+    // Include current character in subset
+    subset[subsetIndex] = str[index];
+    generateSubsets(str, subset, index + 1, subsetIndex + 1);
+
+    // Exclude current character from subset
+    generateSubsets(str, subset, index + 1, subsetIndex);
+}
+
+int main() {
+    char str[50];
+    char subset[50]; // Temporary array to store subsets
+
+    printf("Enter a string: ");
+    scanf("%s", str);
+
+    printf("\nAll possible non-empty subsets of '%s':\n", str);
+    generateSubsets(str, subset, 0, 0);
+
+    return 0;
+}
